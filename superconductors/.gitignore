@@ -1,0 +1,24 @@
+# Obsidian 配置缓存
+.obsidian/workspace.json
+.obsidian/workspace
+.obsidian/cache
+.obsidian/plugins/obsidian-git/data.json
+
+# 系统文件
+Thumbs.db
+.DS_Store
+Desktop.ini
+
+# 临时文件
+*.tmp
+*.swp
+*.bak
+*~
+
+# 未命名临时笔记
+*.base
+
+# Obsidian 缓存片段
+.obsidian/workspace.json
+.obsidian/workspace
+.obsidian/cache

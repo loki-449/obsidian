@@ -1,0 +1,29 @@
+{
+  "database": "Zotero",
+  "noteImportFolder": "SuperconductivityVault/03_文献笔记",
+  "pdfExportImageDPI": 150,
+  "pdfExportImageFormat": "jpg",
+  "pdfExportImageQuality": 90,
+  "citeFormats": [
+    {
+      "name": "文献引用",
+      "format": "formatted-citation",
+      "cslStyle": "china-national-standard-gb-t-7714-2015-author-date"
+    }
+  ],
+  "exportFormats": [
+    {
+      "name": "文献笔记",
+      "outputPathTemplate": "SuperconductivityVault/03_文献笔记/{{citekey}}.md",
+      "imageOutputPathTemplate": "SuperconductivityVault/03_文献笔记/attachments/{{citekey}}/",
+      "imageBaseNameTemplate": "image",
+      "templatePath": "Templates/literature-note-template.md",
+      "cslStyle": "china-national-standard-gb-t-7714-2015-author-date"
+    }
+  ],
+  "citeSuggestTemplate": "[[{{citekey}}]]",
+  "openNoteAfterImport": true,
+  "whichNotesToOpenAfterImport": "first-imported-note",
+  "exeOverridePath": "",
+  "shouldConcat": false
+}
