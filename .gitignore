@@ -10,3 +10,8 @@ Thumbs.db
 
 # Trash
 .trash/
+
+# SSH keys (do not upload)
+.ssh/
+ssh_keys/
+*.pem
