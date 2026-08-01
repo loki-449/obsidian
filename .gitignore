@@ -15,3 +15,6 @@ Thumbs.db
 .ssh/
 ssh_keys/
 *.pem
+
+# 计算机部署 (private - do not upload)
+计算机部署/
