@@ -1,0 +1,160 @@
+# 领域定义 —— 决定什么文献会被抓进来、怎么排序
+#
+# 打分规则：
+#   命中 keywords.<组>.terms 中任一词条，得该组 weight 分。
+#   标题命中额外乘 title_boost；同组内多次命中不重复计分。
+#   命中 exclude.terms 直接判死，不进队列。
+#
+# 阈值：score >= auto_accept 直接入库；review <= score < auto_accept 进人工复核队列；
+#      低于 review 丢弃（仍记入 rejected.jsonl 便于回查漏网）。
+#
+# 词条写法：匹配不区分大小写，词内的空格和连字符可互换
+# （electron-phonon 也能命中 electron phonon），且不要求词尾边界
+# （superconduct 能命中 superconductivity / superconductor / superconducting）。
+# 所以词条尽量写词根，不要写全形式。
+
+version: 1
+
+# ---------------------------------------------------------------- 硬过滤
+arxiv:
+  # primary 至少命中一个才算候选
+  primary_categories:
+    - cond-mat.supr-con
+    - cond-mat.str-el
+  # secondary 只用于加分，不作为准入条件
+  secondary_categories:
+    - cond-mat.mtrl-sci
+    - cond-mat.mes-hall
+    - cond-mat.other
+
+openalex:
+  # OpenAlex concept ID，作粗筛用（留空则纯靠下面的关键词检索）。
+  # 这两个都是 level-1 的宽泛概念，只用来挡掉非物理的噪声，不做精筛。
+  concepts:
+    - C26873012   # Condensed matter physics
+    - C62520636   # Quantum mechanics
+
+# ---------------------------------------------------------------- 关键词
+title_boost: 2.0
+
+keywords:
+  # 核心方向：博士期间的主战场，权重最高。
+  # 词条顺序有意义 —— OpenAlex 检索式只取前若干条，把最具体的放前面。
+  core:
+    weight: 3.0
+    terms:
+      # -- Kondo / 重费米子主线（J 值这条线的落点）
+      - Kondo lattice
+      - Kondo coupling
+      - Kondo hybridization
+      - Kondo screening
+      - Kondo breakdown
+      - heavy fermion
+      - two-fluid
+      - hybridization gap
+      - coherence temperature
+      - RKKY
+      - Doniach
+      # -- 强关联与非常规超导
+      - strongly correlated
+      - strong correlation
+      - Hubbard model
+      - three-band Hubbard
+      - dynamical mean-field
+      - DMFT
+      - Mott insulator
+      - Mott transition
+      - unconventional superconduct
+      - pairing symmetry
+      - strange metal
+      - non-Fermi liquid
+      - quantum critical
+      # -- 镍氧化物 / 铜氧化物
+      - nickelate
+      - bilayer nickelate
+      - La3Ni2O7
+      - infinite-layer
+      - interlayer valence bond
+      - cuprate
+      - Hund coupling
+      - Hund metal
+      - d-wave
+
+  # 邻近方向：想保持视野、未来可能切进去的
+  adjacent:
+    weight: 1.5
+    terms:
+      - iron-based superconduct
+      - kagome
+      - flat band
+      - twisted bilayer
+      - moire
+      - charge density wave
+      - spin density wave
+      - orbital selective
+      - topological superconduct
+      - altermagnet
+      - quantum spin liquid
+      - frustrated magnet
+      - spin-triplet pairing
+
+  # 老本行：氢化物/常规超导，保留但降权，只捞真正重要的
+  legacy:
+    weight: 0.8
+    terms:
+      - hydride superconduct
+      - superhydride
+      - clathrate hydride
+      - electron-phonon coupling
+      - Eliashberg
+      - high pressure superconduct
+      - conventional superconduct
+
+  # 方法与工具：单独命中不够，用来给已相关的文献加分
+  method:
+    weight: 1.0
+    terms:
+      - density functional theory
+      - DFT+U
+      - GW approximation
+      - quantum Monte Carlo
+      - tensor network
+      - DMRG
+      - slave boson
+      - Gutzwiller
+      - ARPES
+      - angle-resolved photoemission
+      - scanning tunneling
+      - neutron scattering
+      - de Haas
+      - machine learning potential
+
+  # 命中即淘汰：明确不是我方向的
+  exclude:
+    terms:
+      - superconducting qubit
+      - qubit readout
+      - transmon
+      - MRI magnet
+      - power transmission cable
+      - fault current limiter
+      - accelerator cavity
+
+# ---------------------------------------------------------------- 领域收敛种子
+# 用导师 / 课题组的论文抽取高频术语，反过来扩充上面的 core.terms。
+# 跑 `python run.py seeds` 会读这里的论文，输出术语建议到
+# _litpipe/out/seed_terms.md，由你决定要不要合并进 keywords。
+seeds:
+  advisors:
+    - name: Yi-feng Yang
+      openalex_id: A5041000907        # 中科院物理所 杨义峰
+      orcid: 0000-0002-6702-6091
+  papers:
+    # 直接填 DOI 或 arXiv id，一行一个
+    # - 10.1038/s41586-023-06408-7
+    # - arXiv:2308.09698
+
+# ---------------------------------------------------------------- 阈值
+thresholds:
+  auto_accept: 6.0
+  review: 3.0

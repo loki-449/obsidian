@@ -1,6 +1,6 @@
 {
   "database": "Zotero",
-  "noteImportFolder": "SuperconductivityVault/03_文献笔记",
+  "noteImportFolder": "知识库/03_文献笔记",
   "pdfExportImageDPI": 150,
   "pdfExportImageFormat": "jpg",
   "pdfExportImageQuality": 90,
@@ -14,8 +14,8 @@
   "exportFormats": [
     {
       "name": "文献笔记",
-      "outputPathTemplate": "SuperconductivityVault/03_文献笔记/{{citekey}}.md",
-      "imageOutputPathTemplate": "SuperconductivityVault/03_文献笔记/attachments/{{citekey}}/",
+      "outputPathTemplate": "知识库/03_文献笔记/{{citekey}}.md",
+      "imageOutputPathTemplate": "知识库/03_文献笔记/attachments/{{citekey}}/",
       "imageBaseNameTemplate": "image",
       "templatePath": "Templates/literature-note-template.md",
       "cslStyle": "china-national-standard-gb-t-7714-2015-author-date"

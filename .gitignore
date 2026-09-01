@@ -18,3 +18,7 @@ ssh_keys/
 
 # 计算机部署 (private - do not upload)
 计算机部署/
+
+# Vault reorg backups (local only, do not upload)
+.vault-reorg-backup-20260814-212508/
+.vault-template-backup-20260814-233553/

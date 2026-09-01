@@ -1,0 +1,8 @@
+# 含个人信息（邮箱、代理、机构代理 Cookie）
+config/settings.yaml
+
+# 中间产物：抓取结果、状态库、PDF 缓存、术语建议
+out/
+
+__pycache__/
+*.pyc

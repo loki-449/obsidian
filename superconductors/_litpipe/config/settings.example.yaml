@@ -1,0 +1,71 @@
+# 运行时设置模板 —— 复制为 settings.yaml 后按需修改。
+# settings.yaml 含个人信息（邮箱、代理、机构代理 Cookie），已在 .gitignore 中排除。
+
+paths:
+  vault: "E:/obsidian/bin/superconductors"
+  notes_dir: "知识库/03_文献笔记"
+  # 收件箱和总览面板放这里
+  moc_dir: "知识库/00_MOC"
+  attachments_dir: "知识库/03_文献笔记/attachments"
+  zotero_data_dir: "D:/Zotero"
+  # 管道自己的中间产物，不进 Obsidian 索引
+  work_dir: "_litpipe/out"
+
+network:
+  timeout: 30
+  retries: 3
+  # 两次请求之间的最小间隔（秒），避免被 API 限流
+  min_interval: 0.5
+  # OpenAlex 的 polite pool 需要邮箱，填了明显更快更稳
+  contact_email: ""
+  # HTTP 代理，留空则不用。格式 http://127.0.0.1:7890
+  proxy: ""
+
+fetch:
+  # 每次增量抓取回看多少天
+  lookback_days: 7
+  # 每个源单轮最多取多少条
+  max_per_source: 300
+  # 启用的源，见 litpipe/sources/__init__.py 的 REGISTRY
+  sources:
+    - arxiv
+    - openalex
+
+# PDF 解析链路：chain 留空 = 管道不碰 PDF 下载。
+# 全文交给 Zotero 自己的 Find Available PDF（Zotero 设置里配好机构代理即可）。
+# 想让管道也抓 PDF 的话，把 resolver 名字填进 chain：
+#   arxiv / unpaywall / openalex_oa / institutional_proxy
+# 自定义 resolver 见 _litpipe/litpipe/resolvers/README.md
+resolve:
+  chain: []
+  institutional_proxy:
+    enabled: false
+    url_template: ""
+    cookie: ""
+  pdf_cache: "_litpipe/out/pdf"
+
+zotero:
+  # Zotero 本地连接器端口，Zotero 运行时才可用
+  connector_url: "http://127.0.0.1:23119"
+  # 连接器只能存进 Zotero 界面里当前选中的分类，没法在请求里指定。
+  # 这里填的名字只用于 sync 前的提醒：选错了会警告你去 Zotero 点一下。
+  target_collection: "0_管道入库"
+  # true 则把 OpenAlex 给的开放获取 PDF 链接一并交给 Zotero 下载。
+  # 默认关 —— 全文按需抓，用 Zotero 的 Find Available PDF。
+  attach_oa_pdf: false
+  # 连接器不可用时，退化为导出 .bib 到 work_dir，手动拖进 Zotero
+  fallback_bibtex: true
+
+tagger:
+  enabled: true
+  # OpenAI 兼容接口。DeepSeek / 火山方舟 / 本地 vLLM 都能填这里。
+  base_url: "https://api.deepseek.com"
+  # 只存环境变量名，不要把 key 写进文件
+  api_key_env: "DEEPSEEK_API_KEY"
+  model: "deepseek-chat"
+  # 一次送几篇摘要给模型
+  batch_size: 8
+  # 摘要截断长度，控制 token 消耗
+  max_abstract_chars: 1800
+  # 单次生成上限。推理模型（ark-code-latest 等）建议 >= 4096
+  max_tokens: 2048

@@ -15,15 +15,15 @@
   "enable_folder_templates": true,
   "folder_templates": [
     {
-      "folder": "06_每日研究日志",
+      "folder": "记录/每日研究日志",
       "template": "Templates/daily-note-template.md"
     },
     {
-      "folder": "03_文献笔记",
+      "folder": "知识库/03_文献笔记",
       "template": "Templates/literature-note-template.md"
     },
     {
-      "folder": "04_我的研究",
+      "folder": "记录/我的研究",
       "template": "Templates/research-note-template.md"
     }
   ],
